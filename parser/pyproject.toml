@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "parser"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beautifulsoup4 = "^4.12.3"
+aiohttp = "^3.9.5"
+elasticsearch = "^8.14.0"
+loguru = "^0.7.2"
+types-beautifulsoup4 = "^4.12.0.20240511"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.10.0"
+isort = "^5.13.2"
+black = "^24.4.2"
+autoflake = "^2.3.1"
+unify = "^0.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

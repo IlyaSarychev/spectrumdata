@@ -1,0 +1,49 @@
+services:
+  api:
+    build: ./api
+    container_name: api
+    ports:
+      - "8000:8000"
+    networks:
+      - spectrumdata
+    depends_on:
+      elastic:
+        condition: service_healthy
+
+  parser:
+    build: ./parser
+    container_name: parser
+    networks:
+      - spectrumdata
+    depends_on:
+      elastic:
+        condition: service_healthy
+
+  elastic:
+    image: elasticsearch:8.14.1
+    container_name: elastic
+    environment:
+      discovery.type: single-node
+      ELASTIC_PASSWORD: pass123
+      xpack.security.http.ssl.enabled: false
+      xpack.license.self_generated.type: basic
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+    ports:
+      - "9200:9200"
+    networks:
+      - spectrumdata
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  es_data:
+
+networks:
+  spectrumdata:
+    name: spectrumdata
+    driver: bridge
